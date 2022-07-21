@@ -333,10 +333,13 @@ namespace Avalonia
                 throw new InvalidOperationException("BeginInit was not called.");
             }
 
-            if (--_initCount == 0 && _logicalRoot != null)
+            if (--_initCount == 0)
             {
-                ApplyStyling();
-                InitializeIfNeeded();
+                if (_logicalRoot is not null)
+                {
+                    ApplyStyling();
+                    InitializeIfNeeded();
+                }
             }
         }
 
