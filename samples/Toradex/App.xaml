@@ -1,0 +1,45 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:Toradex"
+             x:Class="Toradex.App">
+  <Application.DataTemplates>
+    <local:ViewLocator />
+  </Application.DataTemplates>
+
+  <Application.Styles>
+    <FluentTheme Mode="Light"></FluentTheme>
+    <StyleInclude Source="avares://Toradex/Theme/Button.Back.axaml" />
+    <StyleInclude Source="avares://Toradex/Theme/Button.Home.axaml" />
+    <StyleInclude Source="avares://Toradex/Theme/Button.Power.axaml" />
+
+    <Style Selector="TextBlock">
+      <Setter Property="FontFamily"
+              Value="avares://Toradex/Assets/Fonts/ProximaNova-Regular.otf#Proxima Nova" />
+    </Style>
+
+    <Style Selector="Rectangle.Rotate">
+      <Style.Animations>
+        <Animation Duration="0:0:3"
+                   IterationCount="Infinite"
+                   PlaybackDirection="Reverse">
+          <KeyFrame Cue="0%">
+            <Setter Property="RotateTransform.Angle"
+                    Value="0" />
+            <Setter Property="ScaleTransform.ScaleX"
+                    Value="1" />
+            <Setter Property="ScaleTransform.ScaleY"
+                    Value="1" />
+          </KeyFrame>
+          <KeyFrame Cue="50%">
+            <Setter Property="RotateTransform.Angle"
+                    Value="360" />
+            <Setter Property="ScaleTransform.ScaleX"
+                    Value="0.3" />
+            <Setter Property="ScaleTransform.ScaleY"
+                    Value="0.3" />
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+  </Application.Styles>
+</Application>

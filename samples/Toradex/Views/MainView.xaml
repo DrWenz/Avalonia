@@ -1,0 +1,196 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="Toradex.Views.MainView">
+  <Panel>
+    <Panel>
+      <Panel.Background>
+        <ImageBrush Source="../Assets/app_background.png"
+                    Opacity="1"
+                    Stretch="UniformToFill" />
+      </Panel.Background>
+    </Panel>
+    <Grid RowDefinitions="100,*"
+          ColumnDefinitions="*,*">
+      <Panel Grid.Row="0"
+             Grid.ColumnSpan="2">
+        <TextBlock Text="Aktuelle Messung"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   Foreground="Gray"
+                   Margin="0,60,0,0"
+                   FontSize="35" />
+        <Rectangle Fill="Red"
+                   Height="20"
+                   VerticalAlignment="Top"
+                   PointerPressed="InputElement_OnPointerPressed"
+                   PointerMoved="InputElement_OnPointerMoved"
+                   PointerReleased="InputElement_OnPointerReleased">
+          <Rectangle.Transitions>
+            <Transitions>
+              <DoubleTransition Property="Height"
+                                Duration="00:00:00.100"
+                                Easing="CubicEaseInOut" />
+            </Transitions>
+          </Rectangle.Transitions>
+        </Rectangle>
+        <Border Height="4"
+                CornerRadius="2.5"
+                Background="Black"
+                Width="250"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Center"
+                Margin="0,40,0,0" />
+        <Button Classes="Home"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="20,20,0,0" />
+
+
+        <Button Classes="Power"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Margin="0,20,20,0" />
+      </Panel>
+      <Arc Grid.Column="0"
+           Grid.Row="1"
+           StartAngle="-225"
+           SweepAngle="270"
+           Width="350"
+           Height="350"
+           StrokeThickness="30"
+           StrokeLineCap="Round"
+           Stroke="Gray"
+           Opacity="0.3" />
+      <Arc Grid.Column="0"
+           Grid.Row="1"
+           StartAngle="-225"
+           SweepAngle="40"
+           Width="350"
+           Height="350"
+           StrokeThickness="30"
+           StrokeLineCap="Round"
+           Stroke="#153d6d" />
+      <TextBlock Grid.Column="0"
+                 Grid.Row="1"
+                 Text="20,90%"
+                 FontSize="50"
+                 Foreground="Black"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Center" />
+      <TextBlock Grid.Column="0"
+                 Grid.Row="1"
+                 Text="O2"
+                 FontSize="50"
+                 Foreground="Gray"
+                 VerticalAlignment="Bottom"
+                 Margin="0,0,0,75"
+                 HorizontalAlignment="Center" />
+      <Grid Grid.Column="1"
+            Grid.Row="1"
+            ColumnDefinitions="0.6*,*"
+            Margin="25"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Stretch"
+            RowDefinitions="Auto,50,50,50,0,*,35,35,35,35,*">
+        <TextBlock Grid.Column="0"
+                   Grid.Row="0"
+                   Text="Letzte Messung"
+                   Foreground="Gray"
+                   FontSize="17"
+                   VerticalAlignment="Center" />
+        <TextBlock Grid.Column="0"
+                   Grid.ColumnSpan="2"
+                   Grid.Row="1"
+                   Text="24.01.2022 14:45:10          20,91% O2    79,09% N2"
+                   Foreground="Black"
+                   FontSize="20"
+                   VerticalAlignment="Center" />
+        <Rectangle Grid.Row="2"
+                   Height="1"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2"
+                   Fill="Gray"
+                   Opacity="0.5"
+                   Margin="25,0,25,0" />
+        <TextBlock Grid.Column="0"
+                   Grid.Row="3"
+                   Text="Datum"
+                   Foreground="Gray"
+                   FontSize="22"
+                   VerticalAlignment="Center" />
+        <TextBlock Grid.Column="1"
+                   Grid.Row="3"
+                   Text="24.01.2022 14:47:45"
+                   Foreground="Black"
+                   FontSize="22"
+                   VerticalAlignment="Center" />
+
+
+        <TextBlock Grid.Column="0"
+                   Grid.Row="6"
+                   Text="Benutzer"
+                   Foreground="Gray"
+                   FontSize="20"
+                   VerticalAlignment="Center" />
+        <TextBlock Grid.Column="0"
+                   Grid.Row="7"
+                   Text="Linie"
+                   Foreground="Gray"
+                   FontSize="20"
+                   VerticalAlignment="Center" />
+        <TextBlock Grid.Column="0"
+                   Grid.Row="8"
+                   Text="Produkt"
+                   Foreground="Gray"
+                   FontSize="20"
+                   VerticalAlignment="Center" />
+
+        <TextBlock Grid.Column="1"
+                   Grid.Row="6"
+                   Text="Max Mustermann"
+                   Foreground="Black"
+                   FontSize="22"
+                   VerticalAlignment="Center" />
+        <TextBlock Grid.Column="1"
+                   Grid.Row="7"
+                   Text="Linie 1, Halle 2"
+                   Foreground="Black"
+                   FontSize="22"
+                   VerticalAlignment="Center" />
+        <TextBlock Grid.Column="1"
+                   Grid.Row="8"
+                   Text="Salami 150gr"
+                   Foreground="Black"
+                   FontSize="22"
+                   VerticalAlignment="Center" />
+        <Button Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Grid.Row="10"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
+                CornerRadius="10"
+                Background="#153d6d"
+                Width="350">
+          <StackPanel Orientation="Horizontal">
+            <Viewbox Width="40"
+                     Height="40">
+              <!-- <avalonia:MaterialIcon Kind="Loading" -->
+              <!--                        Foreground="White" /> -->
+            </Viewbox>
+            <TextBlock VerticalAlignment="Center"
+                       Text="Messung läuft ..."
+                       FontSize="20"
+                       Foreground="White" />
+          </StackPanel>
+        </Button>
+      </Grid>
+    </Grid>
+  </Panel>
+</UserControl>
