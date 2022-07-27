@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
+    <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
+    <TrimMode>copyused</TrimMode>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="**\*.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <AvaloniaResource Include="**\*.xaml">
+      <SubType>Designer</SubType>
+    </AvaloniaResource>
+    <AvaloniaResource Include="Assets\*" />
+    <AvaloniaResource Include="Assets\Fonts\*" />
+    <Compile Update="Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Fonts\*" />
+    <EmbeddedResource Update="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\packages\Avalonia\Avalonia.csproj" />
+    <ProjectReference Include="..\..\src\Avalonia.Controls.ColorPicker\Avalonia.Controls.ColorPicker.csproj" />
+    <ProjectReference Include="..\..\src\Avalonia.Controls.DataGrid\Avalonia.Controls.DataGrid.csproj" />
+    <ProjectReference Include="..\..\src\Avalonia.Diagnostics\Avalonia.Diagnostics.csproj" />
+    <ProjectReference Include="..\..\src\Avalonia.ReactiveUI\Avalonia.ReactiveUI.csproj" />
+    <ProjectReference Include="..\..\src\Avalonia.Themes.Default\Avalonia.Themes.Default.csproj" />
+    <ProjectReference Include="..\..\src\Avalonia.Themes.Fluent\Avalonia.Themes.Fluent.csproj" />
+    <ProjectReference Include="..\..\src\Linux\Avalonia.LinuxFramebuffer\Avalonia.LinuxFramebuffer.csproj" />
+    <ProjectReference Include="..\MiniMvvm\MiniMvvm.csproj" />
+    <ProjectReference Include="..\SampleControls\ControlSamples.csproj" />
+    <PackageReference Include="SkiaSharp.Skottie" Version="2.88.1-preview.79" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.1-preview.79" />
+  </ItemGroup>
+
+  <Import Project="..\..\build\BuildTargets.targets" />
+</Project>

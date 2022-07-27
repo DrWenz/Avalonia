@@ -1,0 +1,67 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <Button Classes="Home"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Margin="0,20,20,0" />
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="Button.Home">
+        <Setter Property="Width"
+                Value="80" />
+        <Setter Property="Height"
+                Value="80" />
+        <Setter Property="CornerRadius"
+                Value="40" />
+        <Setter Property="Background"
+                Value="White" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="BorderBrush"
+                Value="Transparent" />
+        <Setter Property="Content">
+            <Setter.Value>
+                <Template>
+                    <Viewbox>
+                        <!-- <avalonia:MaterialIcon Kind="Home" -->
+                        <!--                        Foreground="Gray" /> -->
+                    </Viewbox>
+                </Template>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel>
+                    <Border x:Name="PART_Border"
+                            BoxShadow="0 0 10 0 Gray"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            Margin="7.5">
+                        <ContentPresenter x:Name="PART_ContentPresenter"
+                                          Background="{TemplateBinding Background}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          CornerRadius="{TemplateBinding CornerRadius}"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Padding="{TemplateBinding Padding}"
+                                          RecognizesAccessKey="True"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.Home:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background"
+                Value="#F0F0F0" />
+    </Style>
+    <Style Selector="Button.Home:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background"
+                Value="#D4D4D4" />
+    </Style>
+</Styles>
