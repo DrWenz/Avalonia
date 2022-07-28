@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -13,8 +14,9 @@ using Toradex.Views;
 namespace Toradex;
 
 public class App : Application
-{ 
-    public static LottieSplashToDrm StaticLottieSplashToDrm { get; set; }
+{
+    public static CancellationTokenSource LottieCancelationSource { get; } = new();
+    //public static LottieSplashToDrm StaticLottieSplashToDrm { get; set; }
 
     public override void Initialize()
     {

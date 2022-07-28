@@ -40,7 +40,7 @@ public partial class MainView  : UserControl
         if (_isFirstTimeRendered)
         {
             _isFirstTimeRendered = false;
-            App.StaticLottieSplashToDrm?.Dispose();
+            App.LottieCancelationSource?.Cancel();
             PerformanceCounter.Step("First time rendered");
         }
 

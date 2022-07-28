@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.LinuxFramebuffer;
 using Avalonia.LinuxFramebuffer.Output;
@@ -23,23 +24,30 @@ internal class Program
         try
         {
             PerformanceCounter.Step("Application start ...");
-            var app = BuildAvaloniaApp();
-            PerformanceCounter.Step("App builded");
             if (args.Contains("--drm"))
             {
-                var drmOutput = new DrmOutput("/dev/dri/card0", false,
-                    new DrmOutputOptions { InitialBufferSwappingColor = Colors.White });
-                App.StaticLottieSplashToDrm = new MySplash(drmOutput);
-                var animation = Animation.Create(new MemoryStream(Encoding.UTF8.GetBytes(AppResources.SplashScreen)));
-                animation.Seek(0);
-                App.StaticLottieSplashToDrm.Load(animation);
-                return app.StartLinuxDirect(args, drmOutput);
+                Animation animation = null;
+                var lottieTask = Task.Run(() =>
+                {
+                    animation = Animation.Create(new MemoryStream(Encoding.UTF8.GetBytes(AppResources.SplashScreen)));
+                    animation.Seek(0);
+                });
+                PerformanceCounter.Step("Start creating DrmOutput, lottie init started parallel");
+                var drmOutput = new DrmOutput(GetArgumentValue(args, "--card","/dev/dri/card0"), false,
+                    new DrmOutputOptions { InitialBufferSwappingColor = Colors.White, EnableInitialBufferSwapping = true });
+                PerformanceCounter.Step("DrmOutput created");
+                var lottie = new MySplash(drmOutput);
+                if (!lottieTask.IsCompleted || !lottieTask.IsCanceled)
+                    lottieTask.Wait();
+                lottie.Load(animation);
+                PerformanceCounter.Step("Splash loaded");
+                return BuildAvaloniaApp().StartLinuxDirect(args, drmOutput);
             }
 
             if (args.Contains("--fbdev"))
-                app.StartLinuxFbDev(args);
+                BuildAvaloniaApp().StartLinuxFbDev(args);
 
-            return app
+            return BuildAvaloniaApp()
                 .StartWithClassicDesktopLifetime(args);
         }
         catch (Exception e)
@@ -58,7 +66,10 @@ internal class Program
     {
         return AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .UseReactiveUI();
+            .AfterSetup(builder =>
+            {
+                builder.UseReactiveUI();
+            });
     }
 
     private static string GetArgumentValue(string[] args, string parameter, string defaultValue = "")

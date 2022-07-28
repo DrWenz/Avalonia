@@ -41,22 +41,25 @@ namespace Avalonia.LinuxFramebuffer.Output
         {
             if(options != null) 
                 _outputOptions = options;
-            
+            PerformanceCounter.Step("Start DrmCard");
             var card = new DrmCard(path);
-
+            PerformanceCounter.Step("DrmCard ready, start GetResources");
             var resources = card.GetResources(connectorsForceProbe);
 
+            PerformanceCounter.Step("GetResources ready, start GetConnectors");
             var connector =
                 resources.Connectors.FirstOrDefault(x => x.Connection == DrmModeConnection.DRM_MODE_CONNECTED);
             if(connector == null)
                 throw new InvalidOperationException("Unable to find connected DRM connector");
 
+            PerformanceCounter.Step("GetConnectors ready, start GetModes");
             var mode = connector.Modes.OrderByDescending(x => x.IsPreferred)
                 .ThenByDescending(x => x.Resolution.Width * x.Resolution.Height)
                 //.OrderByDescending(x => x.Resolution.Width * x.Resolution.Height)
                 .FirstOrDefault();
             if(mode == null)
                 throw new InvalidOperationException("Unable to find a usable DRM mode");
+            PerformanceCounter.Step("GetModes ready, start Init");
             Init(card, resources, connector, mode);
         }
 
@@ -145,15 +148,22 @@ namespace Avalonia.LinuxFramebuffer.Output
                 }
             }
 
+            
+            PerformanceCounter.Step("start GetCrtc");
             _crtcId = GetCrtc();
+            PerformanceCounter.Step("GetCrtc ready, start gbm_create_device");
             var device = gbm_create_device(card.Fd);
+            PerformanceCounter.Step("gbm_create_device ready, start gbm_surface_create");
             _gbmTargetSurface = gbm_surface_create(device, modeInfo.Resolution.Width, modeInfo.Resolution.Height,
                 GbmColorFormats.GBM_FORMAT_XRGB8888, GbmBoFlags.GBM_BO_USE_SCANOUT | GbmBoFlags.GBM_BO_USE_RENDERING);
             if(_gbmTargetSurface == IntPtr.Zero)
                 throw new InvalidOperationException("Unable to create GBM surface");
 
+            PerformanceCounter.Step("gbm_surface_create ready, start EglDisplay");
             _eglDisplay = new EglDisplay(new EglInterface(eglGetProcAddress), false, 0x31D7, device, null);
+            PerformanceCounter.Step("EglDisplay ready, start EglPlatformOpenGlInterface");
             _platformGl = new EglPlatformOpenGlInterface(_eglDisplay);
+            PerformanceCounter.Step("EglPlatformOpenGlInterface ready, start CreateWindowSurface");
             _eglSurface =  _platformGl.CreateWindowSurface(_gbmTargetSurface);
 
             _deferredContext = _platformGl.PrimaryEglContext;
@@ -162,6 +172,7 @@ namespace Avalonia.LinuxFramebuffer.Output
             var initialBufferSwappingColorG = _outputOptions.InitialBufferSwappingColor.G / 255.0f;
             var initialBufferSwappingColorB = _outputOptions.InitialBufferSwappingColor.B / 255.0f;
             var initialBufferSwappingColorA = _outputOptions.InitialBufferSwappingColor.A / 255.0f;
+            PerformanceCounter.Step("CreateWindowSurface ready, start _deferredContext.MakeCurrent & SwapBuffers");
             using (_deferredContext.MakeCurrent(_eglSurface))
             {
                 _deferredContext.GlInterface.ClearColor(initialBufferSwappingColorR, initialBufferSwappingColorG, 
@@ -170,12 +181,15 @@ namespace Avalonia.LinuxFramebuffer.Output
                 _eglSurface.SwapBuffers();
             }
 
+            PerformanceCounter.Step("start gbm_surface_lock_front_buffer");
             var bo = gbm_surface_lock_front_buffer(_gbmTargetSurface);
+            PerformanceCounter.Step("gbm_surface_lock_front_buffer ready, start GetFbIdForBo");
             var fbId = GetFbIdForBo(bo);
             var connectorId = connector.Id;
             var mode = modeInfo.Mode;
 
             
+            PerformanceCounter.Step("GetFbIdForBo ready, start drmModeSetCrtc");
             var res = drmModeSetCrtc(_card.Fd, _crtcId, fbId, 0, 0, &connectorId, 1, &mode);
             if (res != 0)
                 throw new Win32Exception(res, "drmModeSetCrtc failed");
@@ -183,6 +197,7 @@ namespace Avalonia.LinuxFramebuffer.Output
             _mode = mode;
             _currentBo = bo;
             
+            PerformanceCounter.Step("drmModeSetCrtc ready, start InitialBufferSwapping");
             if (_outputOptions.EnableInitialBufferSwapping)
             {
                 //Go trough two cycles of buffer swapping (there are render artifacts otherwise)

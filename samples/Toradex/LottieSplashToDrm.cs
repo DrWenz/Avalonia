@@ -72,7 +72,7 @@ public class LottieSplashToDrm : IDisposable
 
         _timer = new Timer
         {
-            Interval = Math.Max(1 / 60.0, 1 / _animation.Fps) * 1000
+            Interval = Math.Max(1 / 12.5, 1 / _animation.Fps) * 1000
         };
         _timer.Elapsed += Tick;
         _timer.Enabled = true;
@@ -83,6 +83,12 @@ public class LottieSplashToDrm : IDisposable
 
     private void Tick(object? sender, ElapsedEventArgs e)
     {
+        if (App.LottieCancelationSource.IsCancellationRequested)
+        {
+            Dispose();
+            return;
+        }
+        
         if (_timer is null) return;
 
         if (_repeatCount == 0 || (_repeatCount > 0 && _count >= _repeatCount))

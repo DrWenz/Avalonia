@@ -39,7 +39,7 @@ namespace Avalonia.LinuxFramebuffer
             if (gl != null)
                 AvaloniaLocator.CurrentMutable.Bind<IPlatformGpu>().ToConstant(gl);
             Compositor = new Compositor(AvaloniaLocator.Current.GetService<IRenderLoop>()!, gl);
-            return factory?.Create(root, renderLoop) ?? new CompositingRenderer(root, Compositor);
+            //return factory?.Create(root, renderLoop) ?? new CompositingRenderer(root, Compositor);
             return factory?.Create(root, renderLoop) ?? new DeferredRenderer(root, renderLoop);
         }
 
