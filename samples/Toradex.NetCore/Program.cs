@@ -69,6 +69,10 @@ internal class Program
             .AfterSetup(builder =>
             {
                 builder.UseReactiveUI();
+            })
+            .With(new FontManagerOptions
+            {  
+                DefaultFamilyName = "resm:Toradex.Assets?assembly=Toradex#Proxima Nova"
             });
     }
 

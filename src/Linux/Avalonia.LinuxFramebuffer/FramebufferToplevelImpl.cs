@@ -35,10 +35,10 @@ namespace Avalonia.LinuxFramebuffer
         {
             var factory = AvaloniaLocator.Current.GetService<IRendererFactory>();
             var renderLoop = AvaloniaLocator.Current.GetService<IRenderLoop>();
-            var gl = AvaloniaLocator.Current.GetService<IPlatformOpenGlInterface>();
-            if (gl != null)
-                AvaloniaLocator.CurrentMutable.Bind<IPlatformGpu>().ToConstant(gl);
-            Compositor = new Compositor(AvaloniaLocator.Current.GetService<IRenderLoop>()!, gl);
+            // var gl = AvaloniaLocator.Current.GetService<IPlatformOpenGlInterface>();
+            // if (gl != null)
+            //     AvaloniaLocator.CurrentMutable.Bind<IPlatformGpu>().ToConstant(gl);
+            // Compositor = new Compositor(AvaloniaLocator.Current.GetService<IRenderLoop>()!, gl);
             //return factory?.Create(root, renderLoop) ?? new CompositingRenderer(root, Compositor);
             return factory?.Create(root, renderLoop) ?? new DeferredRenderer(root, renderLoop);
         }

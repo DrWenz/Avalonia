@@ -27,8 +27,8 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        AvaloniaLocator.CurrentMutable
-            .Bind<IFontManagerImpl>().ToConstant(new CustomFontManagerImpl());
+        // AvaloniaLocator.CurrentMutable
+        //     .Bind<IFontManagerImpl>().ToConstant(new CustomFontManagerImpl());
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             desktop.MainWindow = new MainWindow();
